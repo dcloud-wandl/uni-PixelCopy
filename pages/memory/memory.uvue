@@ -1,33 +1,227 @@
 <template>
-    <view>
-        <button @click='getData()'>获取app内存</button>
-        <view>App使用内存：{{ memoryData.TotalPss }} MB</view>
+  <view class="page-container">
+    <view class="content-area">
+      <!-- Main Metric Card -->
+      <view class="metric-card main-card">
+        <text class="metric-label">App 总内存 (PSS)</text>
+        <view class="metric-value-container">
+          <text class="metric-value">{{ memoryData.TotalPss }}</text>
+          <text class="metric-unit">MB</text>
+        </view>
+        <text class="metric-desc">当前应用占用的实际物理内存</text>
+      </view>
+
+      <!-- Detailed Metrics Grid -->
+      <view class="details-grid">
+        <view class="metric-card detail-card detail-card-left">
+          <text class="detail-label">私有内存</text>
+          <view class="detail-value-row">
+            <text class="detail-value">{{ memoryData.TotalPrivateDirty != '' ? memoryData.TotalPrivateDirty : '0' }}</text>
+            <text class="detail-unit">MB</text>
+          </view>
+          <text class="detail-desc">Private Dirty</text>
+        </view>
+        <view class="metric-card detail-card">
+          <text class="detail-label">共享内存</text>
+          <view class="detail-value-row">
+            <text class="detail-value">{{ memoryData.TotalSharedDirty != '' ? memoryData.TotalSharedDirty : '0' }}</text>
+            <text class="detail-unit">MB</text>
+          </view>
+          <text class="detail-desc">Shared Dirty</text>
+        </view>
+      </view>
     </view>
+
+    <!-- Bottom Action -->
+    <view class="action-bar">
+      <button class="btn btn-primary" hover-class="btn-hover" @click="getData">
+        刷新数据
+      </button>
+    </view>
+  </view>
 </template>
 
 <script setup lang="uts">
-    import { getAppMemory } from '@/uni_modules/app-performance-memory';
-    
-    type Obj = {
-        TotalPss: string;
-        TotalPrivateDirty: string;
-        TotalSharedDirty: string;
-    };
-    let memoryData = ref<Obj>({
-        TotalPss: '0',
-        TotalPrivateDirty: '',
-        TotalSharedDirty: ''
-    });
+  import { getAppMemory } from '@/uni_modules/app-performance-memory';
 
-    function getData() {
-        let data: any = getAppMemory();
-        console.log("-->", data );
-        memoryData.value.TotalPss = (data as UTSJSONObject)["TotalPss"] as string;
-    };
+  type Obj = {
+    TotalPss : string;
+    TotalPrivateDirty : string;
+    TotalSharedDirty : string;
+  };
+
+  let memoryData = ref<Obj>({
+    TotalPss: '0',
+    TotalPrivateDirty: '0',
+    TotalSharedDirty: '0'
+  });
+
+  function getData() {
+    let data = getAppMemory() as UTSJSONObject;
+    // console.log("-->", data);
+    memoryData.value = {
+      TotalPss: data["TotalPss"] as string,
+      TotalPrivateDirty: data["TotalPrivateDirty"] as string,
+      TotalSharedDirty: data["TotalSharedDirty"] as string
+    } as Obj;
+  };
+
+  // Auto fetch on load
+  getData();
 </script>
 
 <style>
-    .button {
-        margin: 15px;
-    }
+  .page-container {
+    flex: 1;
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-bar {
+    height: 44px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-bottom-width: 1px;
+    border-bottom-color: #e2e8f0;
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+
+  .nav-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .content-area {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .metric-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    border-width: 1px;
+    border-color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-card {
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    margin-bottom: 20px;
+  }
+
+  .metric-label {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 12px;
+  }
+
+  .metric-value-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: 8px;
+  }
+
+  .metric-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: #6366f1; /* Indigo 500 */
+    line-height: 1;
+  }
+
+  .metric-unit {
+    font-size: 16px;
+    color: #94a3b8;
+    margin-left: 6px;
+    font-weight: 500;
+    margin-bottom: 6px; /* Adjustment for flex-end alignment */
+  }
+
+  .metric-desc {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  .details-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .detail-card {
+    flex: 1;
+  }
+
+  .detail-card-left {
+    margin-right: 16px;
+  }
+
+  .detail-label {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+
+  .detail-value-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: 4px;
+  }
+
+  .detail-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .detail-unit {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-left: 4px;
+    margin-bottom: 4px; /* Adjustment for flex-end alignment */
+  }
+
+  .detail-desc {
+    font-size: 12px;
+    color: #cbd5e1;
+  }
+
+  .action-bar {
+    padding: 24px;
+    background-color: #ffffff;
+    border-top-width: 1px;
+    border-top-color: #e2e8f0;
+    padding-bottom: 40px;
+  }
+
+  .btn {
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background-color: #6366f1;
+    color: #ffffff;
+  }
+
+  .btn-hover {
+    background-color: #4f46e5;
+  }
 </style>
