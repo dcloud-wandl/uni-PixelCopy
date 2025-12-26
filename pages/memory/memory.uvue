@@ -1,5 +1,9 @@
 <template>
   <view class="page-container">
+    <view class="nav-bar">
+      <text class="nav-title">内存监控</text>
+    </view>
+
     <view class="content-area">
       <!-- Main Metric Card -->
       <view class="metric-card main-card">
@@ -59,15 +63,38 @@
   function getData() {
     let data = getAppMemory() as UTSJSONObject;
     // console.log("-->", data);
-    memoryData.value = {
+    const newData = {
       TotalPss: data["TotalPss"] as string,
       TotalPrivateDirty: data["TotalPrivateDirty"] as string,
       TotalSharedDirty: data["TotalSharedDirty"] as string
     } as Obj;
+    
+    memoryData.value = newData;
+    
+    // Store data to persist across navigation
+    uni.setStorageSync('memory_cache_data', newData);
   };
 
-  // Auto fetch on load
-  getData();
+  // Load cached data on page load
+  const cached = uni.getStorageSync('memory_cache_data');
+  if (cached != null && cached != "") {
+    let cachedObj : UTSJSONObject | null = null;
+    if (typeof cached == 'string') {
+      cachedObj = JSON.parse(cached as string) as UTSJSONObject;
+    } else {
+      cachedObj = cached as UTSJSONObject;
+    }
+
+    if (cachedObj != null) {
+      memoryData.value = {
+        TotalPss: (cachedObj["TotalPss"] != null) ? (cachedObj["TotalPss"] as string) : '0',
+        TotalPrivateDirty: (cachedObj["TotalPrivateDirty"] != null) ? (cachedObj["TotalPrivateDirty"] as string) : '0',
+        TotalSharedDirty: (cachedObj["TotalSharedDirty"] != null) ? (cachedObj["TotalSharedDirty"] as string) : '0'
+      } as Obj;
+    }
+  }
+
+  // Auto fetch on load disabled
 </script>
 
 <style>

@@ -1,5 +1,9 @@
 <template>
   <view class="page-container">
+    <view class="nav-bar">
+      <text class="nav-title">扫码功能</text>
+    </view>
+
     <view class="content-area">
       <!-- 扫描状态/占位展示 -->
       <view class="placeholder-section" v-if="scanResult == '' && errorMsg == ''">
