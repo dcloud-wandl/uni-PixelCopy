@@ -2,19 +2,21 @@
   "id": "android-PixedCopy",
   "displayName": "Android PixelCopy 截图插件",
   "version": "1.0.0",
-  "description": "基于Android PixelCopy API的截图插件",
+  "description": "基于Android API PixelCopy开发的UTS插件",
   "keywords": [
     "screenshot",
     "pixelcopy",
     "android",
     "capture"
-  ],
+],
   "repository": "",
   "engines": {
-    "HBuilderX": "^4.0.0"
+    "HBuilderX": "^4.0.0",
+    "uni-app": "^4.0",
+    "uni-app-x": "^4.0"
   },
   "dcloudext": {
-    "type": "uts-plugin",
+    "type": "uts",
     "sale": {
       "regular": {
         "price": "0.00"
@@ -27,60 +29,73 @@
       "qq": ""
     },
     "declaration": {
-      "ads": "",
-      "data": "",
-      "permissions": ""
+      "ads": "无",
+      "data": "无",
+      "permissions": "无"
     },
-    "npmurl": ""
+    "npmurl": "",
+    "darkmode": "√",
+    "i18n": "√",
+    "widescreen": "√"
   },
   "uni_modules": {
     "dependencies": [],
     "encrypt": [],
     "platforms": {
       "cloud": {
-        "tcb": "y",
-        "aliyun": "y",
-        "alipay": "y"
+        "tcb": "√",
+        "aliyun": "√",
+        "alipay": "√"
       },
       "client": {
-        "Vue": {
-          "vue2": "y",
-          "vue3": "y"
+        "uni-app": {
+          "vue": {
+            "vue2": "-",
+            "vue3": "-"
+          },
+          "web": {
+            "safari": "-",
+            "chrome": "-"
+          },
+          "app": {
+            "vue": "-",
+            "nvue": "-",
+            "android": "-",
+            "ios": "-",
+            "harmony": "-"
+          },
+          "mp": {
+            "weixin": "-",
+            "alipay": "-",
+            "toutiao": "-",
+            "baidu": "-",
+            "kuaishou": "-",
+            "jd": "-",
+            "harmony": "-",
+            "qq": "-",
+            "lark": "-"
+          },
+          "quickapp": {
+            "huawei": "-",
+            "union": "-"
+          }
         },
-        "App": {
-          "app-android": "y",
-          "app-ios": "n"
-        },
-        "H5-mobile": {
-          "Safari": "n",
-          "Android Browser": "n",
-          "微信浏览器(Android)": "n",
-          "QQ浏览器(Android)": "n"
-        },
-        "H5-pc": {
-          "Chrome": "n",
-          "IE": "n",
-          "Edge": "n",
-          "Firefox": "n",
-          "Safari": "n"
-        },
-        "小程序": {
-          "微信": "n",
-          "阿里": "n",
-          "百度": "n",
-          "字节跳动": "n",
-          "QQ": "n",
-          "钉钉": "n",
-          "快手": "n",
-          "飞书": "n",
-          "京东": "n"
-        },
-        "快应用": {
-          "华为": "n",
-          "联盟": "n"
-        },
-        "Vue": {
-          "vue3": "y"
+        "uni-app-x": {
+          "web": {
+            "safari": "x",
+            "chrome": "x"
+          },
+          "app": {
+            "android": {
+                "extVersion": "1.0.0",
+                "minVersion": "26"
+            },
+            "ios": "x",
+            "harmony": "x"
+          },
+          "mp": {
+            "weixin": "x"
+          }
         }
       }
     }
