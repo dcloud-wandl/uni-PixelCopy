@@ -1,9 +1,5 @@
 <template>
   <view class="page-container">
-    <view class="nav-bar">
-      <text class="nav-title">扫码功能</text>
-    </view>
-    
     <view class="content-area">
       <!-- 扫描状态/占位展示 -->
       <view class="placeholder-section" v-if="scanResult == '' && errorMsg == ''">
@@ -25,7 +21,7 @@
           <text class="result-value">{{ scanResult }}</text>
         </view>
       </view>
-      
+
       <!-- 错误展示卡片 -->
       <view v-if="errorMsg != ''" class="card error-card">
         <view class="card-header">
@@ -39,19 +35,19 @@
 
     <!-- 底部操作区 -->
     <view class="action-bar">
-      <button 
-        class="btn btn-primary" 
+      <button
+        class="btn btn-primary"
         hover-class="btn-hover"
         @click="handleScan"
         :disabled="isScanning"
       >
         {{ isScanning ? '正在启动...' : '开始扫描' }}
       </button>
-      
-      <button 
-        class="btn btn-secondary" 
+
+      <button
+        class="btn btn-secondary"
         hover-class="btn-secondary-hover"
-        @click="handleStop" 
+        @click="handleStop"
         :disabled="!isScanning"
         :class="{ 'btn-disabled': !isScanning }"
       >
@@ -77,7 +73,7 @@ export default {
       this.scanResult = ''
       this.errorMsg = ''
       this.isScanning = true
-      
+
       startScan({
         success: (result : string) => {
           this.scanResult = result
