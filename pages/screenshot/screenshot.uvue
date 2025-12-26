@@ -1,0 +1,48 @@
+<template>
+    <view>
+        <button @click='captureScreenshot()'>截图</button>
+        
+        <view v-if="screenshotPath">截图路径：{{ screenshotPath }}</view>
+        
+        <view v-if="screenshotPath" style="margin-top: 20px;">
+            <text>截图预览：</text>
+            <image 
+                :src="'file://' + screenshotPath" 
+                mode="aspectFit"
+                style="width: 200px; height: 300px; border: 1px solid #ccc; margin-top: 10px;"
+            />
+        </view>
+    </view>
+</template>
+
+<script setup lang="uts">
+    import { captureScreen } from '@/uni_modules/android-PixedCopy';
+
+    let screenshotPath = ref<string>('');
+
+    function captureScreenshot() {
+        captureScreen({
+            success: (res) => {
+                console.log('截图成功:', res.filePath);
+                screenshotPath.value = res.filePath;
+                uni.showToast({
+                    title: '截图成功',
+                    icon: 'success'
+                });
+            },
+            fail: (err) => {
+                console.log('截图失败:', err.errMsg);
+                uni.showToast({
+                    title: '截图失败: ' + err.errMsg,
+                    icon: 'error'
+                });
+            }
+        });
+    };
+</script>
+
+<style>
+    .button {
+        margin: 15px;
+    }
+</style>

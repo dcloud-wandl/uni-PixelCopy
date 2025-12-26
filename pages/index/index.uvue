@@ -1,36 +1,28 @@
 <template>
-    <view>
-        <button @click='getData()'>获取app内存ok</button>
-        
-        <view>App使用内存：{{ memoryData.TotalPss }} MB</view>
+    <view style="padding-top: 20px;">
+        <button @click="goToMemory">内存监控</button>
+        <button @click="goToScreenshot">截图功能</button>
     </view>
 </template>
 
 <script setup lang="uts">
-    import { getAppMemory } from '@/uni_modules/app-performance-memory';
-    
-    
-    type Obj = {
-        TotalPss: string;
-        TotalPrivateDirty: string;
-        TotalSharedDirty: string;
-    };
-    let memoryData = ref<Obj>({
-        TotalPss: '0',
-        TotalPrivateDirty: '',
-        TotalSharedDirty: ''
-    });
+    function goToMemory() {
+        uni.navigateTo({
+            url: '/pages/memory/memory'
+        });
+    }
 
-    function getData() {
-        let data: any = getAppMemory();
-        console.log("-->", data );
-        // memoryData.value.TotalPss = (data as UTSJSONObject)["TotalPss"];
-        memoryData.value.TotalPss = (data as UTSJSONObject)["TotalPss"] as string;
-    };
+    function goToScreenshot() {
+        uni.navigateTo({
+            url: '/pages/screenshot/screenshot'
+        });
+    }
 </script>
 
 <style>
-    .button {
-        margin: 15px;
+    button {
+        width: 100%;
+        height: 80px;
+        font-size: 18px;
     }
 </style>
